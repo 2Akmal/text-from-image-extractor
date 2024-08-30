@@ -6,8 +6,6 @@ from googletrans import Translator
 # Set the path to the Tesseract executable (if needed)
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-# Display the image and title
-st.image(r'C:\Users\Hafiz Muhammad Akmal\Downloads\1678151870_1672293457.png', width=100)  # Adjust the width as needed
 st.title("Text-From-Image Extractor")
 
 # Streamlit file uploader for image upload
