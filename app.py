@@ -3,6 +3,7 @@ from PIL import Image
 import requests
 from io import BytesIO
 from googletrans import Translator
+import base64  # Import base64 for encoding the logo
 
 # Your OCR.Space API key
 OCR_SPACE_API_KEY = 'K86735227088957'  # Replace with your actual API key
@@ -17,6 +18,34 @@ def ocr_space_file(filename, api_key=OCR_SPACE_API_KEY, language='eng'):
                                 'language': language})
         return r.json()
 
+# Load the local logo file and encode it to base64
+logo_path = "logo/1678151870_1672293457.png"  # Adjust the path based on your directory structure
+
+# Open the logo file and encode it
+with open(logo_path, "rb") as logo_file:
+    encoded_logo = base64.b64encode(logo_file.read()).decode()
+
+# Display the logo in the header
+st.markdown(
+    f"""
+    <style>
+    .header {{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+    }}
+    .header img {{
+        max-height: 100px;
+    }}
+    </style>
+    <div class="header">
+        <img src="data:image/png;base64,{encoded_logo}" alt="Logo">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 # Streamlit app
 st.title("Text-From-Image Extractor")
 
@@ -28,23 +57,4 @@ if uploaded_file is not None:
 
     # Save the uploaded file to a temporary location
     temp_path = "/tmp/uploaded_image.png"
-    image.save(temp_path)
-
-    # Extract text using OCR.Space API
-    result = ocr_space_file(temp_path)
-    text = result.get('ParsedResults')[0].get('ParsedText') if result.get('ParsedResults') else ""
-
-    # Display the image and the extracted text
-    st.image(image, caption='Uploaded Image', use_column_width=True)
-    st.write("Extracted Text:")
-    st.write(text)
-
-    # Translate text to Urdu
-    translator = Translator()
-    translated_text = translator.translate(text, src='en', dest='ur').text
-
-    # Display the translated text
-    st.write("Translated Text (Urdu):")
-    st.write(translated_text)
-else:
-    st.write("Please upload an image file.")
+    i
